@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ public class PostsFragment extends Fragment {
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private SwipeRefreshLayout swipeContainer;
 
 
     public PostsFragment() {
@@ -59,7 +62,32 @@ public class PostsFragment extends Fragment {
         //set the layout manager on the recycler view
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts();
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryPosts();
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeContainer.setRefreshing(false);
+                    }
+                }, 4000); // Delay in millis
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
+
 
     protected void queryPosts() {
         //Specify which class to query
@@ -78,10 +106,13 @@ public class PostsFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
+                adapter.clear();
+                adapter.addAll(posts);
+                //allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
 
             }
         });
     }
+
 }

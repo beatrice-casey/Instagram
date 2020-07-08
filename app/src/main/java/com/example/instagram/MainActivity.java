@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setIcon(R.drawable.ic_home_outline);
+        bottomNavigationView.getMenu().getItem(1).setIcon(R.drawable.ic_action_name);
+        bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_profile_outline);
+
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,15 +64,19 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
                         fragment = new PostsFragment();
+                        menuItem.setIcon(R.drawable.ic_home);
                         break;
                     case R.id.action_compose:
                         fragment = new ComposeFragment();
+                        menuItem.setIcon(R.drawable.ic_create_fill);
                         break;
                     case R.id.action_profile:
                         fragment = new ProfileFragment();
+                        menuItem.setIcon(R.drawable.ic_profile);
                         break;
                     default:
                         fragment = new PostsFragment();
+                        menuItem.setIcon(R.drawable.ic_home);
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

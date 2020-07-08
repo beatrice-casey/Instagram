@@ -22,4 +22,11 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/menu_bottom_navigation" />
 
+    <androidx.appcompat.widget.ActionMenuView
+        android:id="@+id/topMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:menu="@menu/menu_top" />
+
 </RelativeLayout>

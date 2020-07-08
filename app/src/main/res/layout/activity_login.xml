@@ -10,6 +10,13 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="138dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_instagram" />
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"

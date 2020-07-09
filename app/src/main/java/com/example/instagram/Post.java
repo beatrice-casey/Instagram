@@ -2,15 +2,18 @@ package com.example.instagram;
 
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -45,6 +48,32 @@ public class Post extends ParseObject {
 
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
+    }
+
+    public Like saveLike(ParseUser currentUser) {
+        Like like = new Like();
+        like.setPost(this);
+        like.setUser(currentUser);
+        like.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                  Log.e("Post", "Error saving", e);
+                }
+            }
+        });
+        return like;
+    }
+
+    public void deleteLike(Like like) {
+        like.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e("Post", "Error saving", e);
+                }
+            }
+        });
     }
 
 }

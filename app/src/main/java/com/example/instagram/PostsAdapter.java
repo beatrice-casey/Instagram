@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +19,14 @@ import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -30,6 +34,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private Context context;
     private List<Post> posts;
     private boolean isLiked;
+    public static final String TAG = "Adapter";
 
     public PostsAdapter(Context context, List<Post> posts) {
         this.context = context;
@@ -61,6 +66,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDescription;
         private TextView tvTimestamp;
         private Button btnLike;
+        final ParseUser currentUser;
+        private Like like;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,10 +76,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             btnLike = itemView.findViewById(R.id.btnLike);
+            currentUser = ParseUser.getCurrentUser();
+            like = new Like();
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Post post) {
+        public void bind(final Post post) {
             //bind data into view elements
             tvDescription.setText(post.getDescription());
             tvUsername.setText(post.getUser().getUsername());
@@ -83,6 +92,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Glide.with(context).load(post.getImage().getUrl()).into(ivImage);
             }
             checkLiked();
+            if (isLiked) {
+                btnLike.setBackgroundResource(R.drawable.ic_like_fill);
+            }
 
             //like onClicklistener
             btnLike.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +103,29 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     if (isLiked == false) {
                        btnLike.setBackgroundResource(R.drawable.ic_like_fill);
                        isLiked = true;
+                       post.saveLike(currentUser);
+                       post.saveInBackground(new SaveCallback() {
+                           @Override
+                           public void done(ParseException e) {
+                               if (e != null) {
+                                   Log.e(TAG, "Error saving post", e);
+                                   return;
+                               }
+                           }
+                       });
                     } else {
                         btnLike.setBackgroundResource(R.drawable.ic_like);
                         isLiked = false;
+                        post.deleteLike(like);
+                        post.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.e(TAG, "Error saving post", e);
+                                    return;
+                                }
+                            }
+                        });
                     }
 
 
@@ -114,6 +146,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     }
                     if (likes.isEmpty()) {
                         isLiked = false;
+                    } else {
+                        isLiked = true;
+                        like = likes.get(0);
                     }
 
                 }

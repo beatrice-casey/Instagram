@@ -22,6 +22,12 @@
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <Button
+        android:id="@+id/btnLike"
+        android:layout_width="24dp"
+        android:layout_height="22dp"
+        android:background="@drawable/ic_like" />
+
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
@@ -34,4 +40,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="8m" />
+
 </LinearLayout>

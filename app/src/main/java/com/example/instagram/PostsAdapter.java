@@ -3,9 +3,11 @@ package com.example.instagram;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -23,6 +29,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private Context context;
     private List<Post> posts;
+    private boolean isLiked;
 
     public PostsAdapter(Context context, List<Post> posts) {
         this.context = context;
@@ -53,6 +60,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private ImageView ivImage;
         private TextView tvDescription;
         private TextView tvTimestamp;
+        private Button btnLike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +68,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            btnLike = itemView.findViewById(R.id.btnLike);
             itemView.setOnClickListener(this);
         }
 
@@ -73,7 +82,42 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(ivImage);
             }
+            checkLiked();
 
+            //like onClicklistener
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isLiked == false) {
+                       btnLike.setBackgroundResource(R.drawable.ic_like_fill);
+                       isLiked = true;
+                    } else {
+                        btnLike.setBackgroundResource(R.drawable.ic_like);
+                        isLiked = false;
+                    }
+
+
+                }
+            });
+
+        }
+
+        private void checkLiked() {
+            ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+            query.whereEqualTo(Like.KEY_USER, ParseUser.getCurrentUser());
+            query.whereEqualTo(Like.KEY_POST, posts.get(getAdapterPosition()));
+            query.findInBackground(new FindCallback<Like>() {
+                @Override
+                public void done(List<Like> likes, ParseException e) {
+                    if (e != null) {
+                        return;
+                    }
+                    if (likes.isEmpty()) {
+                        isLiked = false;
+                    }
+
+                }
+            });
         }
 
         @Override

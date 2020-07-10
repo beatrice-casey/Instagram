@@ -100,6 +100,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    checkLiked();
                     if (isLiked == false) {
                        btnLike.setBackgroundResource(R.drawable.ic_like_fill);
                        isLiked = true;
@@ -145,8 +146,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         return;
                     }
                     if (likes.isEmpty()) {
+                        Log.i(TAG, "likes list is empty.");
                         isLiked = false;
                     } else {
+                        Log.i(TAG, "likes list is not empty.");
                         isLiked = true;
                         like = likes.get(0);
                     }

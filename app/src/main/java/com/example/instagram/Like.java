@@ -5,7 +5,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 @ParseClassName("Like")
-public class Like extends ParseObject {
+public class Like extends Post {
 
     public static final String KEY_USER = "User";
 

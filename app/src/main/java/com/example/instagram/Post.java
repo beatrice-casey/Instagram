@@ -66,11 +66,13 @@ public class Post extends ParseObject {
     }
 
     public void deleteLike(Like like) {
+        like.setPost(this);
+        like.setUser(ParseUser.getCurrentUser());
         like.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e("Post", "Error saving", e);
+                    Log.e("Post", "Error saving delete", e);
                 }
             }
         });

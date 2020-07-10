@@ -26,6 +26,9 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is the fragment that is responsible for getting the data/posts for the home page
+ */
 
 public class PostsFragment extends Fragment {
 

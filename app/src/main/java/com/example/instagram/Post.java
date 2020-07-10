@@ -18,6 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This class parses the post from the Parse database. It has all the information needed to make or
+ * load a post from the database.
+ */
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
 

@@ -38,6 +38,12 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.util.List;
 
+
+/**
+ * This class is the main activity. It sets up the view for the bottom navigation and also
+ * navigates the user to the appropriate fragment depending on what they choose from the bottom
+ * navigation.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";

@@ -13,6 +13,11 @@ import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
+/**
+ * This class is responsible for creating the details view of a post that has been clicked on
+ * from the home page or profile page.
+ */
+
 public class PostDetailsActivity extends AppCompatActivity {
 
     Context context;

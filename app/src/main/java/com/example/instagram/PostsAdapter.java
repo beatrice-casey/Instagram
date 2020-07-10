@@ -29,6 +29,11 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.util.List;
 
+/**
+ * This class is the adapter that binds the data from the models to the view
+ * It also checks if the post has been liked and adjusts the view accordingly.
+ */
+
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     private Context context;
@@ -146,10 +151,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         return;
                     }
                     if (likes.isEmpty()) {
-                        Log.i(TAG, "likes list is empty.");
                         isLiked = false;
                     } else {
-                        Log.i(TAG, "likes list is not empty.");
                         isLiked = true;
                         like = likes.get(0);
                     }

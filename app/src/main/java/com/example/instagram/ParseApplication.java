@@ -5,6 +5,10 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+/**
+ * This class registers the parse models and initializes it so it can be used in the app.
+ */
+
 public class ParseApplication extends Application {
 
     @Override

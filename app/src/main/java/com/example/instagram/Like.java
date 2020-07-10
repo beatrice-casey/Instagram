@@ -4,6 +4,10 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+/**
+ * This class parses the Like class from the Parse database.
+ */
+
 @ParseClassName("Like")
 public class Like extends Post {
 

@@ -10,6 +10,11 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+/**
+ * This fragment is very similar to the posts fragment, the only difference is that it only shows
+ * posts the current user posted.
+ */
+
 public class ProfileFragment extends PostsFragment {
 
     @Override

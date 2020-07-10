@@ -37,6 +37,10 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * this class is the fragment responsible for allowing the user to create a post and post it to the
+ * feed.
+ */
 
 public class ComposeFragment extends Fragment {
 
